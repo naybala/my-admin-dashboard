@@ -1,0 +1,15 @@
+@layer tailwind-base, primevue, tailwind-utilities;
+
+@layer tailwind-base {
+    @tailwind base;
+}
+
+@layer primevue {
+    /* PrimeVue theme styles will go here if you import them */
+    /* No explicit import needed here if using Aura preset via PrimeVue config */
+}
+
+@layer tailwind-utilities {
+    @tailwind components;
+    @tailwind utilities;
+}
