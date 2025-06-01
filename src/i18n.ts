@@ -46,6 +46,7 @@ const messages = {
       edit: 'Edit',
       delete: 'Delete',
       search: 'Search...',
+      loading: 'Loading...',
     }
   },
   mm: {
@@ -93,6 +94,7 @@ const messages = {
       edit: 'တည်းဖြတ်ရန်',
       delete: 'ဖျက်ရန်',
       search: 'ရှာဖွေရန်...',
+      loading: 'လွှမ်းမိုးနေသည်...',
     }
   }
 }
