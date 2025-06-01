@@ -22,9 +22,9 @@ const items = ref([
         },
       },
       {
-        label: "Spanish",
+        label: "Myanmar",
         command: () => {
-          locale.value = "es";
+          locale.value = "mm";
         },
       },
     ],

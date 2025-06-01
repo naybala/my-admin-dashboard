@@ -34,9 +34,6 @@ const { items: categories, fetchAll: fetchCategories } = useCrud<Category>({
   apiPath: "categories",
 });
 
-const deleteProductDialog = ref(false);
-const productToDelete = ref<Product | null>(null);
-
 onMounted(async () => {
   await fetchAll();
   await fetchCategories();
@@ -161,7 +158,6 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
 </template>
 
 <style scoped>
-/* Custom styling for PrimeVue components or overrides */
 :deep(.p-datatable) {
   border: 1px solid var(--surface-border);
   border-radius: var(--border-radius);
