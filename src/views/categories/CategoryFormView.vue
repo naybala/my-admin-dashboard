@@ -5,12 +5,9 @@ import { useI18n } from "vue-i18n";
 import { useCrud } from "../../composables/useCrud";
 import type { Category } from "../../types";
 
-// PrimeVue Components
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
-import InputNumber from "primevue/inputnumber";
-import Dropdown from "primevue/dropdown";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";

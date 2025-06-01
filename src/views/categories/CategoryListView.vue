@@ -5,13 +5,10 @@ import { useI18n } from "vue-i18n";
 import { useCrud } from "../../composables/useCrud";
 import type { Category } from "../../types";
 
-// PrimeVue Components
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 import InputText from "primevue/inputtext";
-import Dialog from "primevue/dialog";
-import ConfirmPopup from "primevue/confirmpopup";
 import { useConfirm } from "primevue/useconfirm";
 import { useToast } from "primevue/usetoast";
 
@@ -29,9 +26,6 @@ const {
   fetchAll,
   deleteItem,
 } = useCrud<Category>({ apiPath: "categories" });
-
-const deleteCategoryDialog = ref(false);
-const categoryToDelete = ref<Category | null>(null);
 
 onMounted(async () => {
   await fetchAll();

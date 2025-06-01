@@ -1,31 +1,25 @@
-// src/composables/useCrud.ts
-import { ref, watch, computed } from 'vue'
+import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
-import { useRouter } from 'vue-router'
 
 interface CrudOptions<T> {
-  apiPath: string; // e.g., '/api/products'
-  idKey?: keyof T; // e.g., 'id'
+  apiPath: string; 
+  idKey?: keyof T;
 }
 
 export function useCrud<T extends { id?: string | number }>(options: CrudOptions<T>) {
   const { apiPath, idKey = 'id' } = options
-  const router = useRouter()
 
   const items: Ref<T[]> = ref([])
   const loading = ref(false)
   const error = ref<string | null>(null)
   const selectedItem: Ref<T | null> = ref(null)
 
-  // In a real app, you'd use a library like Axios for API calls
   const fetchAll = async () => {
     loading.value = true
     error.value = null
     try {
-      // Simulate API call
       const response = await new Promise<T[]>(resolve => {
         setTimeout(() => {
-          // Replace with actual API call to GET /apiPath
           const data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
           resolve(data)
         }, 500)
@@ -125,7 +119,6 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     }
   }
 
-  // --- Search / Filter ---
   const searchTerm = ref('')
   const filteredItems = computed(() => {
     if (!searchTerm.value) {

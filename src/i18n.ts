@@ -3,6 +3,7 @@ import { createI18n } from 'vue-i18n'
 const messages = {
   en: {
     dashboardTitle: 'Admin Dashboard',
+    dashboardShortTitle: 'A.D',
     sidebar: {
       dashboard: 'Dashboard',
       products: 'Products',
@@ -18,6 +19,7 @@ const messages = {
       name: 'Name',
       price: 'Price',
       category: 'Category',
+      selectCategory: 'Select Category',
       description: 'Description',
       actions: 'Actions',
       confirmDelete: 'Are you sure you want to delete this product?',
@@ -41,7 +43,10 @@ const messages = {
     },
     common: {
       save: 'Save',
+      success : 'Success',
       cancel: 'Cancel',
+      cancelled : 'Cancelled',
+      deleteCancelled: 'Delete Cancelled',
       new: 'New',
       edit: 'Edit',
       delete: 'Delete',
@@ -51,6 +56,7 @@ const messages = {
   },
   mm: {
     dashboardTitle: 'ဒက်ရှ်ဘုတ်ခေါင်းစဉ်',
+    dashboardShortTitle: 'အေ.ဒီ',
     sidebar: {
       dashboard: 'ဒက်ရှ်ဘုတ်',
       products: 'ထုတ်ကုန်များ',
@@ -66,6 +72,7 @@ const messages = {
       name: 'နာမည်',
       price: 'စျေးနှုန်း',
       category: 'အမျိုးအစား',
+      selectCategory: 'Select အမျိုးအစား',
       description: 'ဖော်ပြချက်',
       actions: 'လုပ်ရပ်များ',
       confirmDelete: 'ဤထုတ်ကုန်ကို ဖျက်လိုသည်မှာ သေချာပါသလား။',
@@ -89,7 +96,10 @@ const messages = {
     },
     common: {
       save: 'သိမ်းရန်',
+      success : 'အောင်မြင်သည်',
       cancel: 'ပယ်ဖျက်ရန်',
+      cancelled : 'ပယ်ဖျက်ပြီး',
+      deleteCancelled: 'ဖျက်ရန် ပယ်ဖျက်ပြီး',
       new: 'အသစ်',
       edit: 'တည်းဖြတ်ရန်',
       delete: 'ဖျက်ရန်',

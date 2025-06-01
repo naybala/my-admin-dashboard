@@ -18,8 +18,8 @@ const { t } = useI18n();
     <div
       class="p-4 text-center font-bold text-xl border-b border-gray-700 dark:border-gray-800"
     >
-      <span v-if="props.isOpen">Admin Dashboard</span>
-      <span v-else>AD</span>
+      <span v-if="props.isOpen">{{ $t("dashboardTitle") }}</span>
+      <span v-else>{{ $t("dashboardShortTitle") }}</span>
     </div>
     <nav class="mt-4">
       <ul>

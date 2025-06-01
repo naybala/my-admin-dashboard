@@ -4,6 +4,7 @@ import AppSidebar from "./components/layout/AppSidebar.vue";
 import AppHeader from "./components/layout/AppHeader.vue";
 import { useThemeStore } from "./stores/theme";
 import ConfirmPopup from "primevue/confirmpopup";
+import Toast from "primevue/toast";
 
 const isSidebarOpen = ref(true);
 const themeStore = useThemeStore();
@@ -29,9 +30,9 @@ const toggleSidebar = () => {
       </div>
     </div>
   </div>
-  <ConfirmPopup></ConfirmPopup>
+
+  <Toast />
+  <ConfirmPopup />
 </template>
 
-<style scoped>
-/* Any App.vue specific styles */
-</style>
+<style scoped></style>

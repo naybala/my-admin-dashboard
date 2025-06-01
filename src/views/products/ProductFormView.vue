@@ -5,12 +5,11 @@ import { useI18n } from "vue-i18n";
 import { useCrud } from "../../composables/useCrud";
 import type { Product, Category } from "../../types";
 
-// PrimeVue Components
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import InputNumber from "primevue/inputnumber";
-import Dropdown from "primevue/dropdown";
+import Select from "primevue/select";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -50,7 +49,6 @@ onMounted(async () => {
     isEditMode.value = true;
     await fetchOne(productId);
     if (product.value) {
-      // Deep copy to avoid direct modification of the reactive `selectedItem`
       productForm.value = JSON.parse(JSON.stringify(product.value));
     }
   }
@@ -162,7 +160,7 @@ const cancel = () => {
             >
               {{ t("products.category") }}
             </label>
-            <Dropdown
+            <Select
               id="category"
               v-model="productForm.categoryId"
               :options="categories"
@@ -209,7 +207,4 @@ const cancel = () => {
   </div>
 </template>
 
-<style scoped>
-/* You might need to add specific styles to override PrimeVue defaults
-   or ensure dark mode compatibility for dropdowns etc. */
-</style>
+<style scoped></style>

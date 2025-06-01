@@ -1,4 +1,3 @@
-// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router';
 import DashboardView from '../views/DashboardView.vue';
 import ProductListView from '../views/products/ProductListView.vue';

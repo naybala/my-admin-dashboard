@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import Card from "primevue/card"; // Example PrimeVue component
-import Chart from "primevue/chart"; // Example PrimeVue component for dashboard
+import Card from "primevue/card";
+import Chart from "primevue/chart";
 
 const { t } = useI18n();
 
-// Example chart data
 const chartData = {
   labels: ["January", "February", "March", "April", "May", "June", "July"],
   datasets: [
