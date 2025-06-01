@@ -4,6 +4,9 @@ import DashboardView from '../views/DashboardView.vue';
 import ProductListView from '../views/products/ProductListView.vue';
 import ProductFormView from '../views/products/ProductFormView.vue';
 
+import CategoryListView from '../views/categories/CategoryListView.vue';
+import CategoryFormView from '../views/categories/CategoryFormView.vue';
+
 
 const routes = [
   {
@@ -25,7 +28,23 @@ const routes = [
     path: '/products/edit/:id',
     name: 'product-edit',
     component: ProductFormView,
-    props: true, // Pass route params as props to the component
+    props: true, 
+  },
+   {
+    path: '/categories',
+    name: 'categories',
+    component: CategoryListView,
+  },
+  {
+    path: '/categories/new',
+    name: 'category-new',
+    component: CategoryFormView,
+  },
+  {
+    path: '/categories/edit/:id',
+    name: 'category-edit',
+    component: CategoryFormView,
+    props: true, 
   },
  
 ]
