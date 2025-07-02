@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useCrud } from "../../composables/useCrud";
@@ -25,21 +25,13 @@ const {
   searchTerm,
   fetchAll,
   deleteItem,
-} = useCrud<Product>({ apiPath: "products" });
-
-const { items: categories, fetchAll: fetchCategories } = useCrud<Category>({
-  apiPath: "categories",
+} = useCrud<Product>({
+  apiPath: "http://localhost:3000/api/mobile/products",
 });
 
 onMounted(async () => {
   await fetchAll();
-  await fetchCategories();
 });
-
-const getCategoryName = (categoryId: number) => {
-  const category = categories.value.find((cat) => cat.id === categoryId);
-  return category ? category.name : "Unknown";
-};
 
 const openNewProductForm = () => {
   router.push({ name: "product-new" });
@@ -100,7 +92,9 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
       <div v-if="loading" class="text-center text-gray-500">
         {{ t("common.loading") }}...
       </div>
-      <div v-else-if="error" class="text-red-500">{{ error }}</div>
+      <div v-else-if="error" class="text-red-500">
+        {{ error }}
+      </div>
       <div v-else>
         <DataTable
           :value="filteredProducts"
@@ -110,21 +104,14 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
           :rowsPerPageOptions="[5, 10, 20, 50]"
           class="p-datatable-sm dark:text-gray-100"
         >
-          <Column field="name" :header="t('products.name')"></Column>
-          <Column field="price" :header="t('products.price')">
-            <template #body="slotProps">
-              ${{ slotProps.data.price.toFixed(2) }}
-            </template>
-          </Column>
+          <Column field="name" :header="t('products.name')" />
+
           <Column field="categoryId" :header="t('products.category')">
             <template #body="slotProps">
-              {{ getCategoryName(slotProps.data.categoryId) }}
+              {{ slotProps.data.category }}
             </template>
           </Column>
-          <Column
-            field="description"
-            :header="t('products.description')"
-          ></Column>
+          <Column field="description" :header="t('products.description')" />
           <Column
             :header="t('products.actions')"
             :exportable="false"

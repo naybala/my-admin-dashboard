@@ -26,15 +26,9 @@ const changeLocale = () => {
         aria-label="Toggle Sidebar"
         @click="emit('toggle-sidebar')"
       />
-      <h1 class="text-2xl font-semibold">{{ $t("dashboardTitle") }}</h1>
     </div>
 
     <div class="flex items-center space-x-4">
-      <InputText
-        placeholder="Search..."
-        class="p-inputtext-sm dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 px-2"
-      />
-
       <Button
         :icon="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"
         severity="secondary"

@@ -2,8 +2,8 @@ import { ref, computed } from 'vue'
 import type { Ref } from 'vue'
 
 interface CrudOptions<T> {
-  apiPath: string; 
-  idKey?: keyof T;
+  apiPath: string
+  idKey?: keyof T
 }
 
 export function useCrud<T extends { id?: string | number }>(options: CrudOptions<T>) {
@@ -13,18 +13,16 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
   const loading = ref(false)
   const error = ref<string | null>(null)
   const selectedItem: Ref<T | null> = ref(null)
+  const searchTerm = ref('')
 
   const fetchAll = async () => {
     loading.value = true
     error.value = null
     try {
-      const response = await new Promise<T[]>(resolve => {
-        setTimeout(() => {
-          const data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
-          resolve(data)
-        }, 500)
-      })
-      items.value = response
+      const response = await fetch(apiPath)
+      if (!response.ok) throw new Error('Failed to fetch items')
+      const result = await response.json()
+      items.value = Array.isArray(result) ? result : result.data
     } catch (e: any) {
       error.value = e.message || 'Failed to fetch items.'
     } finally {
@@ -36,14 +34,10 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     loading.value = true
     error.value = null
     try {
-      const response = await new Promise<T | undefined>(resolve => {
-        setTimeout(() => {
-          const data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
-          const item = data.find(item => item[idKey as keyof T] == id)
-          resolve(item)
-        }, 300)
-      })
-      selectedItem.value = response || null
+      const response = await fetch(`${apiPath}/${id}`)
+      if (!response.ok) throw new Error('Failed to fetch item')
+      const result = await response.json()
+      selectedItem.value = Array.isArray(result) ? result : result.data
     } catch (e: any) {
       error.value = e.message || 'Failed to fetch item.'
     } finally {
@@ -55,17 +49,15 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     loading.value = true
     error.value = null
     try {
-      const response = await new Promise<T>(resolve => {
-        setTimeout(() => {
-          const data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
-          const newItem = { ...item, [idKey]: data.length > 0 ? Math.max(...data.map(i => i[idKey as keyof T] as number)) + 1 : 1 } as T;
-          data.push(newItem)
-          localStorage.setItem(apiPath, JSON.stringify(data))
-          resolve(newItem)
-        }, 300)
+      const response = await fetch(apiPath, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(item),
       })
-      await fetchAll(); // Refresh list
-      return response
+      if (!response.ok) throw new Error('Failed to create item')
+      const newItem = await response.json()
+      await fetchAll()
+      return newItem
     } catch (e: any) {
       error.value = e.message || 'Failed to create item.'
     } finally {
@@ -73,25 +65,21 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     }
   }
 
-  const updateItem = async (id: string | number, updatedFields: Partial<T>) => {
+  const updateItem = async (updatedFields:any) => {
     loading.value = true
     error.value = null
+    console.log(updatedFields);
+    
     try {
-      const response = await new Promise<T | undefined>(resolve => {
-        setTimeout(() => {
-          let data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
-          const index = data.findIndex(item => item[idKey as keyof T] == id)
-          if (index !== -1) {
-            data[index] = { ...data[index], ...updatedFields }
-            localStorage.setItem(apiPath, JSON.stringify(data))
-            resolve(data[index])
-          } else {
-            resolve(undefined)
-          }
-        }, 300)
+      const response = await fetch(`${apiPath}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedFields),
       })
-      await fetchAll(); // Refresh list
-      return response
+      if (!response.ok) throw new Error('Failed to update item')
+      const updatedItem = await response.json()
+      await fetchAll()
+      return updatedItem
     } catch (e: any) {
       error.value = e.message || 'Failed to update item.'
     } finally {
@@ -103,15 +91,11 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     loading.value = true
     error.value = null
     try {
-      await new Promise<void>(resolve => {
-        setTimeout(() => {
-          let data: T[] = JSON.parse(localStorage.getItem(apiPath) || '[]')
-          data = data.filter(item => item[idKey as keyof T] != id)
-          localStorage.setItem(apiPath, JSON.stringify(data))
-          resolve()
-        }, 300)
+      const response = await fetch(`${apiPath}/${id}`, {
+        method: 'DELETE',
       })
-      await fetchAll(); // Refresh list
+      if (!response.ok) throw new Error('Failed to delete item')
+      await fetchAll()
     } catch (e: any) {
       error.value = e.message || 'Failed to delete item.'
     } finally {
@@ -119,16 +103,11 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
     }
   }
 
-  const searchTerm = ref('')
   const filteredItems = computed(() => {
-    if (!searchTerm.value) {
-      return items.value
-    }
-    const lowerCaseSearchTerm = searchTerm.value.toLowerCase()
+    if (!searchTerm.value) return items.value
+    const lower = searchTerm.value.toLowerCase()
     return items.value.filter(item =>
-      Object.values(item).some(value =>
-        String(value).toLowerCase().includes(lowerCaseSearchTerm)
-      )
+      Object.values(item).some(val => String(val).toLowerCase().includes(lower))
     )
   })
 

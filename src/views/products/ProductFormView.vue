@@ -3,12 +3,11 @@ import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useCrud } from "../../composables/useCrud";
-import type { Product, Category } from "../../types";
+import type { Product } from "../../types";
 
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
-import InputNumber from "primevue/inputnumber";
 import Select from "primevue/select";
 import Button from "primevue/button";
 import Toast from "primevue/toast";
@@ -28,11 +27,12 @@ const {
   fetchOne,
   createItem,
   updateItem,
-} = useCrud<Product>({ apiPath: "products" });
+} = useCrud<Product>({ apiPath: "http://localhost:3000/api/mobile/products" });
 
-const { items: categories, fetchAll: fetchCategories } = useCrud<Category>({
-  apiPath: "categories",
-});
+const categories = [
+  { name: "Category 1", id: 1 },
+  { name: "Category 2", id: 2 },
+];
 
 const isEditMode = ref(false);
 
@@ -44,12 +44,12 @@ const productForm = ref<Product>({
 });
 
 onMounted(async () => {
-  await fetchCategories();
   if (productId) {
     isEditMode.value = true;
     await fetchOne(productId);
+
     if (product.value) {
-      productForm.value = JSON.parse(JSON.stringify(product.value));
+      productForm.value = JSON.parse(JSON.stringify(product?.value));
     }
   }
 });
@@ -62,7 +62,7 @@ watch(product, (newVal) => {
 
 const saveProduct = async () => {
   if (isEditMode.value && productId) {
-    await updateItem(productId, productForm.value);
+    await updateItem(productForm.value);
     if (!error.value) {
       toast.add({
         severity: "success",
@@ -137,24 +137,6 @@ const cancel = () => {
 
           <div class="mb-4">
             <label
-              for="price"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
-              {{ t("products.price") }}
-            </label>
-            <InputNumber
-              id="price"
-              v-model="productForm.price"
-              mode="currency"
-              currency="USD"
-              locale="en-US"
-              class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              required
-            />
-          </div>
-
-          <div class="mb-4">
-            <label
               for="category"
               class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
             >
@@ -171,7 +153,7 @@ const cancel = () => {
               required
             />
           </div>
-
+          <!-- Description -->
           <div class="mb-4">
             <label
               for="description"
@@ -186,7 +168,9 @@ const cancel = () => {
               class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
+          <!-- Description -->
 
+          <!-- Action -->
           <div class="flex justify-end space-x-2">
             <Button
               :label="t('common.cancel')"
@@ -201,6 +185,7 @@ const cancel = () => {
               :loading="loading"
             />
           </div>
+          <!-- Action -->
         </form>
       </template>
     </Card>
