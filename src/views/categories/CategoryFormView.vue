@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/useCrud";
+import { useCrud } from "../../composables/common/useCrud";
 import type { Category } from "../../types";
 
 import Card from "primevue/card";

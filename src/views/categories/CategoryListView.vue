@@ -2,7 +2,7 @@
 import { onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/useCrud";
+import { useCrud } from "../../composables/common/useCrud";
 import type { Category } from "../../types";
 
 import DataTable from "primevue/datatable";

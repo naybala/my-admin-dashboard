@@ -2,7 +2,7 @@
 import { onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/useCrud";
+import { useCrud } from "../../composables/common/useCrud";
 import type { Product, Category } from "../../types";
 
 import DataTable from "primevue/datatable";
@@ -26,7 +26,7 @@ const {
   fetchAll,
   deleteItem,
 } = useCrud<Product>({
-  apiPath: "http://localhost:3000/api/mobile/products",
+  apiPath: "api/products",
 });
 
 onMounted(async () => {

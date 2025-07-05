@@ -2,7 +2,7 @@
 import { ref, onMounted, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/useCrud";
+import { useCrud } from "../../composables/common/useCrud";
 import type { Product } from "../../types";
 
 import Card from "primevue/card";
@@ -27,7 +27,7 @@ const {
   fetchOne,
   createItem,
   updateItem,
-} = useCrud<Product>({ apiPath: "http://localhost:3000/api/mobile/products" });
+} = useCrud<Product>({ apiPath: "api/products" });
 
 const categories = [
   { name: "Category 1", id: 1 },

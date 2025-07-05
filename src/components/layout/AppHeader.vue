@@ -2,14 +2,24 @@
 import { useThemeStore } from "../../stores/theme";
 import { useI18n } from "vue-i18n";
 import Button from "primevue/button";
-import InputText from "primevue/inputtext";
+import { useAuthStore } from "../../stores/auth";
+import { useRouter } from "vue-router";
+import Cookies from "js-cookie";
 
 const emit = defineEmits(["toggle-sidebar"]);
 const themeStore = useThemeStore();
 const { locale } = useI18n();
+const authStore = useAuthStore();
+const router = useRouter();
 
 const changeLocale = () => {
   locale.value = locale.value === "en" ? "mm" : "en";
+};
+
+const handleLogout = () => {
+  Cookies.remove("auth-token");
+  authStore.clearToken?.();
+  router.push("/login");
 };
 </script>
 
@@ -29,6 +39,14 @@ const changeLocale = () => {
     </div>
 
     <div class="flex items-center space-x-4">
+      <Button
+        label="Logout"
+        icon="pi pi-sign-out"
+        severity="danger"
+        outlined
+        class="ml-2"
+        @click="handleLogout"
+      />
       <Button
         :icon="themeStore.isDark ? 'pi pi-sun' : 'pi pi-moon'"
         severity="secondary"
