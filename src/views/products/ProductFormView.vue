@@ -2,10 +2,10 @@
 import { useProductForm } from "../../composables/products/useProductForm";
 import Toast from "primevue/toast";
 import Card from "primevue/card";
-import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
-import Select from "primevue/select";
-import Button from "primevue/button";
+import NameField from "../../components/common/NameField.vue";
+import Description from "../../components/common/Description.vue";
+import SelectItem from "../../components/common/SelectItem.vue";
+import FormActions from "../../components/common/FormActions.vue";
 
 const {
   t,
@@ -25,7 +25,6 @@ const {
     <Toast />
     <h1 class="text-3xl font-bold mb-6">
       {{ isEditMode ? t("products.edit") : t("products.add") }}
-      {{ t("products.title") }}
     </h1>
 
     <Card class="dark:bg-gray-800 dark:text-gray-100 shadow-md">
@@ -36,80 +35,35 @@ const {
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
         <form @submit.prevent="saveProduct" v-else>
           <!-- Name -->
-          <div class="mb-4">
-            <label
-              for="name"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
-              {{ t("products.name") }}
-            </label>
-            <InputText
-              id="name"
-              v-model="productForm.name"
-              class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            />
-            <p v-if="validationErrors.name" class="text-red-500 text-sm mt-1">
-              {{ validationErrors.name }}
-            </p>
-          </div>
+          <NameField
+            v-model="productForm.name"
+            :label="t('products.name')"
+            :error="validationErrors.name"
+          />
 
           <!-- Category -->
-          <div class="mb-4">
-            <label
-              for="category"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
-              {{ t("products.category") }}
-            </label>
-            <Select
-              id="category"
-              v-model="productForm.categoryId"
-              :options="categories"
-              optionLabel="name"
-              optionValue="id"
-              :placeholder="t('products.selectCategory')"
-              class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              required
-            />
-            <p
-              v-if="validationErrors.categoryId"
-              class="text-red-500 text-sm mt-1"
-            >
-              {{ validationErrors.categoryId }}
-            </p>
-          </div>
+          <SelectItem
+            id="category"
+            v-model="productForm.categoryId"
+            :label="t('products.category')"
+            :options="categories"
+            :placeholder="t('products.selectCategory')"
+            :error="validationErrors.categoryId"
+          />
 
           <!-- Description -->
-          <div class="mb-4">
-            <label
-              for="description"
-              class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
-            >
-              {{ t("products.description") }}
-            </label>
-            <Textarea
-              id="description"
-              v-model="productForm.description"
-              rows="5"
-              class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-            />
-          </div>
+          <Description
+            v-model="productForm.description"
+            :label="t('products.description')"
+          />
 
           <!-- Actions -->
-          <div class="flex justify-end space-x-2">
-            <Button
-              :label="t('common.cancel')"
-              severity="secondary"
-              @click="cancel"
-              class="p-button-secondary"
-            />
-            <Button
-              :label="t('common.save')"
-              type="submit"
-              class="p-button-primary"
-              :loading="loading"
-            />
-          </div>
+          <FormActions
+            :loading="loading"
+            :onCancel="cancel"
+            :saveLabel="t('common.save')"
+            :cancelLabel="t('common.cancel')"
+          />
         </form>
       </template>
     </Card>

@@ -28,6 +28,7 @@ const messages = {
       productCreated: 'Product created successfully!',
       productUpdated: 'Product updated successfully!',
       productDeleted: 'Product deleted successfully!',
+      productNotDeleted: 'Product deletion was cancelled',
     },
     categories: {
       title: 'Categories Management',
@@ -47,6 +48,7 @@ const messages = {
       save: 'Save',
       success : 'Success',
       error: "Error",
+      info : "Info",
       cancel: 'Cancel',
       cancelled : 'Cancelled',
       deleteCancelled: 'Delete Cancelled',
@@ -85,7 +87,7 @@ const messages = {
       productCreated: 'ထုတ်ကုန်ကို အောင်မြင်စွာ ဖန်တီးခဲ့သည်!',
       productUpdated: 'ထုတ်ကုန်ကို အောင်မြင်စွာ အပ်ဒိတ်လုပ်ခဲ့သည်!',
       productDeleted: 'ထုတ်ကုန်ကို အောင်မြင်စွာ ဖျက်လိုက်သည်!!',
-
+      productNotDeleted: 'Product deletion was cancelled in burmese',
       
     },
     categories: {
@@ -106,6 +108,7 @@ const messages = {
       save: 'သိမ်းရန်',
       success : 'အောင်မြင်သည်',
       error: "Error in burmese",
+      info : "Info in burmese",
       cancel: 'ပယ်ဖျက်ရန်',
       cancelled : 'ပယ်ဖျက်ပြီး',
       deleteCancelled: 'ဖျက်ရန် ပယ်ဖျက်ပြီး',

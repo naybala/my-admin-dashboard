@@ -90,25 +90,4 @@ const {
   </div>
 </template>
 
-<style scoped>
-:deep(.p-datatable) {
-  border: 1px solid var(--surface-border);
-  border-radius: var(--border-radius);
-}
-.dark :deep(.p-datatable .p-datatable-thead th) {
-  background-color: var(--surface-800);
-  color: var(--surface-0);
-}
-.dark :deep(.p-datatable .p-datatable-tbody tr) {
-  background-color: var(--surface-900);
-  color: var(--surface-100);
-}
-.dark :deep(.p-inputtext) {
-  background-color: var(--surface-700);
-  color: var(--surface-0);
-  border-color: var(--surface-600);
-}
-.dark :deep(.p-inputtext:hover) {
-  border-color: var(--primary-color);
-}
-</style>
+<style scoped></style>
