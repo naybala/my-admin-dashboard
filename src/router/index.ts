@@ -23,10 +23,7 @@ const router = createRouter({
 // Global auth guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-
-  // ✅ Ensure persisted token is loaded
   const token = authStore.token;
-
   if (to.meta.requiresAuth && !token) {
     next({ path: "/login", query: { redirect: to.fullPath } });
   } else {
