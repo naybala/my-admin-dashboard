@@ -1,10 +1,11 @@
-import Cookies from "js-cookie";
+import { useAuthStore } from "../../stores/auth";
 
 export async function apiRequest<T>(
   api: string,
   options: RequestInit = {}
 ): Promise<T> {
-  const token = Cookies.get("auth-token");
+  const authStore = useAuthStore();
+  const token = authStore.token;
   const fullUrl = import.meta.env.VITE_BASE_URL + "/" + api;
 
   const headers: HeadersInit = {

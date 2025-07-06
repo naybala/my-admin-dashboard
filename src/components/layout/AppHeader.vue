@@ -4,7 +4,6 @@ import { useI18n } from "vue-i18n";
 import Button from "primevue/button";
 import { useAuthStore } from "../../stores/auth";
 import { useRouter } from "vue-router";
-import Cookies from "js-cookie";
 
 const emit = defineEmits(["toggle-sidebar"]);
 const themeStore = useThemeStore();
@@ -17,8 +16,7 @@ const changeLocale = () => {
 };
 
 const handleLogout = () => {
-  Cookies.remove("auth-token");
-  authStore.clearToken?.();
+  authStore.clearToken();
   router.push("/login");
 };
 </script>

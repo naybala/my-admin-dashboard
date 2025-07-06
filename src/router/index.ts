@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Cookies from "js-cookie";
 import { useAuthStore } from "../stores/auth";
 
 // Import all route modules
@@ -24,7 +23,9 @@ const router = createRouter({
 // Global auth guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
-  const token = authStore.token || Cookies.get("auth-token");
+
+  // ✅ Ensure persisted token is loaded
+  const token = authStore.token;
 
   if (to.meta.requiresAuth && !token) {
     next({ path: "/login", query: { redirect: to.fullPath } });
