@@ -17,9 +17,11 @@ const messages = {
       edit: 'Edit Product',
       delete: 'Delete Product',
       name: 'Name',
+      nameRequired: "Name is required.",
       price: 'Price',
       category: 'Category',
       selectCategory: 'Select Category',
+      categoryRequired: "Please select a category.",
       description: 'Description',
       actions: 'Actions',
       confirmDelete: 'Are you sure you want to delete this product?',
@@ -44,6 +46,7 @@ const messages = {
     common: {
       save: 'Save',
       success : 'Success',
+      error: "Error",
       cancel: 'Cancel',
       cancelled : 'Cancelled',
       deleteCancelled: 'Delete Cancelled',
@@ -52,6 +55,7 @@ const messages = {
       delete: 'Delete',
       search: 'Search...',
       loading: 'Loading...',
+      validationError: "Please fix the form validation errors."
     }
   },
   mm: {
@@ -70,15 +74,19 @@ const messages = {
       edit: 'ထုတ်ကုန်များ တည်းဖြတ်ပါ။',
       delete: 'ထုတ်ကုန်များ ဖျက်ပါ။',
       name: 'နာမည်',
+      nameRequired: "နာမည် is required.",
       price: 'စျေးနှုန်း',
       category: 'အမျိုးအစား',
       selectCategory: 'Select အမျိုးအစား',
+      categoryRequired: "Please select a အမျိုးအစား.",
       description: 'ဖော်ပြချက်',
       actions: 'လုပ်ရပ်များ',
       confirmDelete: 'ဤထုတ်ကုန်ကို ဖျက်လိုသည်မှာ သေချာပါသလား။',
       productCreated: 'ထုတ်ကုန်ကို အောင်မြင်စွာ ဖန်တီးခဲ့သည်!',
       productUpdated: 'ထုတ်ကုန်ကို အောင်မြင်စွာ အပ်ဒိတ်လုပ်ခဲ့သည်!',
       productDeleted: 'ထုတ်ကုန်ကို အောင်မြင်စွာ ဖျက်လိုက်သည်!!',
+
+      
     },
     categories: {
       title: 'အမျိုးအစား စီမံခန့်ခွဲမှု',
@@ -97,6 +105,7 @@ const messages = {
     common: {
       save: 'သိမ်းရန်',
       success : 'အောင်မြင်သည်',
+      error: "Error in burmese",
       cancel: 'ပယ်ဖျက်ရန်',
       cancelled : 'ပယ်ဖျက်ပြီး',
       deleteCancelled: 'ဖျက်ရန် ပယ်ဖျက်ပြီး',
@@ -105,6 +114,8 @@ const messages = {
       delete: 'ဖျက်ရန်',
       search: 'ရှာဖွေရန်...',
       loading: 'လွှမ်းမိုးနေသည်...',
+      validationError: "Please fix the form validation errors in burmese."
+
     }
   }
 }

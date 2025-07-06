@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { useRoute } from "vue-router";
 import { defineProps } from "vue";
-import { RouterLink } from "vue-router";
 import { useI18n } from "vue-i18n";
 
-const props = defineProps<{
-  isOpen: boolean;
-}>();
-
+const props = defineProps<{ isOpen: boolean }>();
 const { t } = useI18n();
+const route = useRoute();
+
+function isActiveBasePath(basePath: string) {
+  return route.path.startsWith(basePath);
+}
 </script>
 
 <template>
@@ -18,57 +20,69 @@ const { t } = useI18n();
     <div
       class="p-4 text-center font-bold text-xl border-b border-gray-700 dark:border-gray-800"
     >
-      <span v-if="props.isOpen">{{ $t("dashboardTitle") }}</span>
-      <span v-else>{{ $t("dashboardShortTitle") }}</span>
+      <span v-if="props.isOpen">{{ t("dashboardTitle") }}</span>
+      <span v-else>{{ t("dashboardShortTitle") }}</span>
     </div>
     <nav class="mt-4">
       <ul>
         <li>
           <RouterLink
-            to="/"
+            to="/dashboard"
             class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
-            :class="{ 'justify-center': !props.isOpen }"
-            active-class="bg-blue-600 dark:bg-blue-800"
+            :class="[
+              { 'justify-center': !props.isOpen },
+              isActiveBasePath('/dashboard')
+                ? 'bg-blue-600 dark:bg-blue-800'
+                : '',
+            ]"
           >
             <i
               class="pi pi-home"
               :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
             ></i>
-            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">{{
-              t("sidebar.dashboard")
-            }}</span>
+            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
+              {{ t("sidebar.dashboard") }}
+            </span>
           </RouterLink>
         </li>
         <li>
           <RouterLink
             to="/products"
             class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
-            :class="{ 'justify-center': !props.isOpen }"
-            active-class="bg-blue-600 dark:bg-blue-800"
+            :class="[
+              { 'justify-center': !props.isOpen },
+              isActiveBasePath('/products')
+                ? 'bg-blue-600 dark:bg-blue-800'
+                : '',
+            ]"
           >
             <i
               class="pi pi-box"
               :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
             ></i>
-            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">{{
-              t("sidebar.products")
-            }}</span>
+            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
+              {{ t("sidebar.products") }}
+            </span>
           </RouterLink>
         </li>
         <li>
           <RouterLink
             to="/categories"
             class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
-            :class="{ 'justify-center': !props.isOpen }"
-            active-class="bg-blue-600 dark:bg-blue-800"
+            :class="[
+              { 'justify-center': !props.isOpen },
+              isActiveBasePath('/categories')
+                ? 'bg-blue-600 dark:bg-blue-800'
+                : '',
+            ]"
           >
             <i
               class="pi pi-tags"
               :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
             ></i>
-            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">{{
-              t("sidebar.categories")
-            }}</span>
+            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
+              {{ t("sidebar.categories") }}
+            </span>
           </RouterLink>
         </li>
       </ul>

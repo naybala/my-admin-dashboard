@@ -1,73 +1,20 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
-import { useRouter } from "vue-router";
-import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/common/useCrud";
-import type { Product, Category } from "../../types";
-
+import { useProductTable } from "../../composables/products/useProductTable";
+import InputText from "primevue/inputtext";
+import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
-import Button from "primevue/button";
-import InputText from "primevue/inputtext";
-import { useConfirm } from "primevue/useconfirm";
-import { useToast } from "primevue/usetoast";
-
-const router = useRouter();
-const { t } = useI18n();
-const confirm = useConfirm();
-const toast = useToast();
 
 const {
-  items: products,
-  filteredItems: filteredProducts,
+  t,
+  filteredProducts,
   loading,
   error,
   searchTerm,
-  fetchAll,
-  deleteItem,
-} = useCrud<Product>({
-  apiPath: "api/products",
-});
-
-onMounted(async () => {
-  await fetchAll();
-});
-
-const openNewProductForm = () => {
-  router.push({ name: "product-new" });
-};
-
-const editProduct = (product: Product) => {
-  router.push({ name: "product-edit", params: { id: product.id } });
-};
-
-const confirmDeleteProduct = (event: Event, product: Product) => {
-  confirm.require({
-    target: event.currentTarget as HTMLElement,
-    message: t("products.confirmDelete"),
-    icon: "pi pi-exclamation-triangle",
-    acceptClass: "p-button-danger",
-    accept: async () => {
-      if (product.id) {
-        await deleteItem(product.id);
-        toast.add({
-          severity: "success",
-          summary: t("common.success"),
-          detail: t("products.productDeleted"),
-          life: 3000,
-        });
-      }
-    },
-    reject: () => {
-      toast.add({
-        severity: "info",
-        summary: t("common.cancelled"),
-        detail: t("common.deleteCancelled"),
-        life: 3000,
-      });
-    },
-  });
-};
+  openNewProductForm,
+  editProduct,
+  confirmDeleteProduct,
+} = useProductTable();
 </script>
 
 <template>
@@ -104,8 +51,8 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
           :rowsPerPageOptions="[5, 10, 20, 50]"
           class="p-datatable-sm dark:text-gray-100"
         >
+          <!-- Headers -->
           <Column field="name" :header="t('products.name')" />
-
           <Column field="categoryId" :header="t('products.category')">
             <template #body="slotProps">
               {{ slotProps.data.category }}
@@ -117,6 +64,8 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
             :exportable="false"
             style="min-width: 8rem"
           >
+            <!-- Headers -->
+
             <template #body="slotProps">
               <Button
                 icon="pi pi-pencil"
@@ -146,23 +95,19 @@ const confirmDeleteProduct = (event: Event, product: Product) => {
   border: 1px solid var(--surface-border);
   border-radius: var(--border-radius);
 }
-
 .dark :deep(.p-datatable .p-datatable-thead th) {
   background-color: var(--surface-800);
   color: var(--surface-0);
 }
-
 .dark :deep(.p-datatable .p-datatable-tbody tr) {
   background-color: var(--surface-900);
   color: var(--surface-100);
 }
-
 .dark :deep(.p-inputtext) {
   background-color: var(--surface-700);
   color: var(--surface-0);
   border-color: var(--surface-600);
 }
-
 .dark :deep(.p-inputtext:hover) {
   border-color: var(--primary-color);
 }

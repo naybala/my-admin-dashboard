@@ -1,108 +1,23 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from "vue";
-import { useRouter, useRoute } from "vue-router";
-import { useI18n } from "vue-i18n";
-import { useCrud } from "../../composables/common/useCrud";
-import type { Product } from "../../types";
-
+import { useProductForm } from "../../composables/products/useProductForm";
+import Toast from "primevue/toast";
 import Card from "primevue/card";
 import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Select from "primevue/select";
 import Button from "primevue/button";
-import Toast from "primevue/toast";
-import { useToast } from "primevue/usetoast";
-
-const router = useRouter();
-const route = useRoute();
-const { t } = useI18n();
-const toast = useToast();
-
-const productId = route.params.id ? Number(route.params.id) : null;
 
 const {
-  selectedItem: product,
+  t,
+  isEditMode,
+  productForm,
+  categories,
+  saveProduct,
+  validationErrors,
+  cancel,
   loading,
   error,
-  fetchOne,
-  createItem,
-  updateItem,
-} = useCrud<Product>({ apiPath: "api/products" });
-
-const categories = [
-  { name: "Category 1", id: 1 },
-  { name: "Category 2", id: 2 },
-];
-
-const isEditMode = ref(false);
-
-const productForm = ref<Product>({
-  name: "",
-  price: 0,
-  categoryId: 0,
-  description: "",
-});
-
-onMounted(async () => {
-  if (productId) {
-    isEditMode.value = true;
-    await fetchOne(productId);
-
-    if (product.value) {
-      productForm.value = JSON.parse(JSON.stringify(product?.value));
-    }
-  }
-});
-
-watch(product, (newVal) => {
-  if (newVal) {
-    productForm.value = JSON.parse(JSON.stringify(newVal));
-  }
-});
-
-const saveProduct = async () => {
-  if (isEditMode.value && productId) {
-    await updateItem(productForm.value);
-    if (!error.value) {
-      toast.add({
-        severity: "success",
-        summary: t("common.success"),
-        detail: t("products.productUpdated"),
-        life: 3000,
-      });
-      router.push({ name: "products" });
-    } else {
-      toast.add({
-        severity: "error",
-        summary: t("common.error"),
-        detail: error.value,
-        life: 3000,
-      });
-    }
-  } else {
-    await createItem(productForm.value);
-    if (!error.value) {
-      toast.add({
-        severity: "success",
-        summary: t("common.success"),
-        detail: t("products.productCreated"),
-        life: 3000,
-      });
-      router.push({ name: "products" });
-    } else {
-      toast.add({
-        severity: "error",
-        summary: t("common.error"),
-        detail: error.value,
-        life: 3000,
-      });
-    }
-  }
-};
-
-const cancel = () => {
-  router.push({ name: "products" });
-};
+} = useProductForm();
 </script>
 
 <template>
@@ -120,6 +35,7 @@ const cancel = () => {
         </div>
         <div v-else-if="error" class="text-red-500">{{ error }}</div>
         <form @submit.prevent="saveProduct" v-else>
+          <!-- Name -->
           <div class="mb-4">
             <label
               for="name"
@@ -131,10 +47,13 @@ const cancel = () => {
               id="name"
               v-model="productForm.name"
               class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
-              required
             />
+            <p v-if="validationErrors.name" class="text-red-500 text-sm mt-1">
+              {{ validationErrors.name }}
+            </p>
           </div>
 
+          <!-- Category -->
           <div class="mb-4">
             <label
               for="category"
@@ -152,7 +71,14 @@ const cancel = () => {
               class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
               required
             />
+            <p
+              v-if="validationErrors.categoryId"
+              class="text-red-500 text-sm mt-1"
+            >
+              {{ validationErrors.categoryId }}
+            </p>
           </div>
+
           <!-- Description -->
           <div class="mb-4">
             <label
@@ -168,9 +94,8 @@ const cancel = () => {
               class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
             />
           </div>
-          <!-- Description -->
 
-          <!-- Action -->
+          <!-- Actions -->
           <div class="flex justify-end space-x-2">
             <Button
               :label="t('common.cancel')"
@@ -185,7 +110,6 @@ const cancel = () => {
               :loading="loading"
             />
           </div>
-          <!-- Action -->
         </form>
       </template>
     </Card>

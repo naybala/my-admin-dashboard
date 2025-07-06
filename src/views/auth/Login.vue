@@ -33,15 +33,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useToast } from "primevue/usetoast";
 import { useRouter, useRoute } from "vue-router";
+
 import useAuthData from "../../composables/auth";
+import { useAppToast } from "../../composables/common/useAppToast";
 
 const email = ref("");
 const password = ref("");
-const toast = useToast();
 const router = useRouter();
 const route = useRoute();
+
+const { showSuccess, showError } = useAppToast();
 const { success, loading, error, fetchAuthData } = useAuthData();
 
 const handleLogin = async () => {
@@ -61,21 +63,20 @@ const handleLogin = async () => {
     const response = await fetchAuthData(credentials);
 
     if (success.value && response?.data?.token && response?.data?.user) {
-      toast.add({
-        severity: "success",
-        summary: `Welcome ${response.data.user.name}!`,
-        detail: "Login successful.",
-        life: 5000,
-      });
-
-      // Redirect to intended page or home
-      const redirectTo = (route.query.redirect as string) || "/";
+      showSuccess(
+        `Welcome ${response.data.user.name}!`,
+        "Login successful.",
+        5000
+      );
+      const redirectTo = (route.query.redirect as string) || "/dashboard";
       router.push(redirectTo);
     } else {
       error.value = "Login failed. Please try again.";
+      showError("Login failed", error.value);
     }
   } catch (err) {
     error.value = "An unexpected error occurred. Please try again.";
+    showError("Error", error.value);
   } finally {
     loading.value = false;
   }

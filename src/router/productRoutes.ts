@@ -1,0 +1,24 @@
+import ProductListView from "../views/products/ProductListView.vue";
+import ProductFormView from "../views/products/ProductFormView.vue";
+
+export const productRoutes = [
+  {
+    path: "/products",
+    name: "products",
+    component: ProductListView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/products/new",
+    name: "product-new",
+    component: ProductFormView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: "/products/edit/:id",
+    name: "product-edit",
+    component: ProductFormView,
+    props: true,
+    meta: { requiresAuth: true },
+  },
+];
