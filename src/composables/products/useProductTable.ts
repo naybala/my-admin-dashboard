@@ -4,7 +4,7 @@ import { useI18n } from "vue-i18n";
 import { useConfirm } from "primevue/useconfirm";
 import { useCrud } from "../common/useCrud";
 import { useAppToast } from "../common/useAppToast";
-import type { Product } from "../../types";
+import type { Product } from "@customTypes/index";
 
 export function useProductTable() {
   const router = useRouter();

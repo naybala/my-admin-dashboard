@@ -2,10 +2,12 @@
 import { useRoute } from "vue-router";
 import { defineProps } from "vue";
 import { useI18n } from "vue-i18n";
+import { usePermissionStore } from "@stores/permission";
 
 const props = defineProps<{ isOpen: boolean }>();
 const { t } = useI18n();
 const route = useRoute();
+const permissionStore = usePermissionStore();
 
 function isActiveBasePath(basePath: string) {
   return route.path.startsWith(basePath);
@@ -47,6 +49,7 @@ function isActiveBasePath(basePath: string) {
         </li>
         <li>
           <RouterLink
+            v-if="permissionStore.hasPermission('manage products')"
             to="/products"
             class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
             :class="[

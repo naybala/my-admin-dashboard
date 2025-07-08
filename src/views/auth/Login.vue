@@ -35,8 +35,8 @@
 import { ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-import useAuthData from "../../composables/auth";
-import { useAppToast } from "../../composables/common/useAppToast";
+import useAuthData from "@composables/auth";
+import { useAppToast } from "@composables/common/useAppToast";
 
 const email = ref("");
 const password = ref("");

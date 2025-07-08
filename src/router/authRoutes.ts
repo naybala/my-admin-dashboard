@@ -1,4 +1,4 @@
-import Login from "../views/auth/Login.vue";
+import Login from "@views/auth/Login.vue";
 
 export const authRoutes = [
   {

@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { useThemeStore } from "../../stores/theme";
+import { useThemeStore } from "@stores/theme";
 import { useI18n } from "vue-i18n";
 import Button from "primevue/button";
-import { useAuthStore } from "../../stores/auth";
+import { useAuthStore } from "@stores/auth";
 import { useRouter } from "vue-router";
 
 const emit = defineEmits(["toggle-sidebar"]);

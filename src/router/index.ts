@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "@stores/auth";
 
 // Import all route modules
 import { authRoutes } from "./authRoutes";
 import { dashboardRoute } from "./dashboardRoute";
 import { productRoutes } from "./productRoutes";
 import { categoryRoutes } from "./categoryRoutes";
+import { usePermissionStore } from "@stores/permission";
 
 // Combine all routes
 const routes = [
@@ -23,10 +24,16 @@ const router = createRouter({
 // Global auth guard
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
+  const permissionStore = usePermissionStore();
+  const permissionRequired = to.meta.permission as string | undefined;
+
   const token = authStore.token;
   if (to.meta.requiresAuth && !token) {
     next({ path: "/login", query: { redirect: to.fullPath } });
-  } else {
+  }else if (permissionRequired && !permissionStore.hasPermission(permissionRequired)) { 
+    next('/login'); 
+  }
+  else {
     next();
   }
 });

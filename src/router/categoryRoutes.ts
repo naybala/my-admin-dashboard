@@ -1,5 +1,5 @@
-import CategoryListView from "../views/categories/CategoryListView.vue";
-import CategoryFormView from "../views/categories/CategoryFormView.vue";
+import CategoryListView from "@views/categories/CategoryListView.vue";
+import CategoryFormView from "@views/categories/CategoryFormView.vue";
 
 export const categoryRoutes = [
   {

@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { useProductForm } from "../../composables/products/useProductForm";
+import { useProductForm } from "@composables/products/useProductForm";
 import Toast from "primevue/toast";
 import Card from "primevue/card";
-import NameField from "../../components/common/NameField.vue";
-import Description from "../../components/common/Description.vue";
-import SelectItem from "../../components/common/SelectItem.vue";
-import FormActions from "../../components/common/FormActions.vue";
+import NameField from "@components/common/NameField.vue";
+import Description from "@components/common/Description.vue";
+import SelectItem from "@components/common/SelectItem.vue";
+import FormActions from "@components/common/FormActions.vue";
 
 const {
   t,

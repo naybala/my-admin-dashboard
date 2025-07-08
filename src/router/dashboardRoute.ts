@@ -1,4 +1,4 @@
-import DashboardView from "../views/DashboardView.vue";
+import DashboardView from "@views/DashboardView.vue";
 
 export const dashboardRoute = [
   {

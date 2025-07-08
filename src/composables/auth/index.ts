@@ -1,8 +1,7 @@
-// src/composables/useAuthData.ts
-import type { AuthResponse } from "../../types/auth";
+import type { AuthResponse } from "@customTypes/auth";
 import { ref } from "vue";
-import { useAuthStore } from "../../stores/auth";
-import { apiRequest } from "../common/useApi";
+import { useAuthStore } from "@stores/auth";
+import { apiRequest } from "@composables/common/useApi";
 
 export default function useAuthData() {
   const success = ref(false);

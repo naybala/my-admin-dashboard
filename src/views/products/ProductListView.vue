@@ -1,9 +1,23 @@
 <script setup lang="ts">
-import { useProductTable } from "../../composables/products/useProductTable";
+import { ref, watch } from "vue";
+import { useProductTable } from "@composables/products/useProductTable";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import { usePermissionStore } from "@stores/permission";
+import { computed } from "vue";
+
+const permissionStore = usePermissionStore();
+const createProductPermission = computed(() =>
+  permissionStore.hasPermission("create products")
+);
+const editProductPermission = computed(() =>
+  permissionStore.hasPermission("edit products")
+);
+const deleteProductPermission = computed(() =>
+  permissionStore.hasPermission("delete products")
+);
 
 const {
   t,
@@ -15,6 +29,24 @@ const {
   editProduct,
   confirmDeleteProduct,
 } = useProductTable();
+
+const rowsPerPage = ref(10);
+const currentPage = ref(1);
+
+watch([currentPage, rowsPerPage], async () => {
+  loading.value = true;
+  await new Promise((resolve) => setTimeout(resolve, 100));
+  loading.value = false;
+});
+
+const onPageChange = (event: any) => {
+  currentPage.value = event.page + 1;
+};
+
+const onRowsChange = (newRows: number) => {
+  rowsPerPage.value = newRows;
+  currentPage.value = 1;
+};
 </script>
 
 <template>
@@ -22,13 +54,14 @@ const {
     <h1 class="text-3xl font-bold mb-6">{{ t("products.title") }}</h1>
 
     <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-6">
-      <div class="flex justify-between items-center mb-6">
+      <div class="flex justify-between items-center mb-6 flex-wrap">
         <InputText
           v-model="searchTerm"
           :placeholder="t('common.search')"
-          class="p-inputtext-sm w-full md:w-1/3 dark:bg-gray-700 dark:text-white"
+          class="p-inputtext-sm w-full md:w-1/3 dark:bg-gray-700 dark:text-white md:mb-0 mb-3"
         />
         <Button
+          v-if="createProductPermission"
           :label="t('products.add')"
           icon="pi pi-plus"
           class="p-button-success"
@@ -47,11 +80,13 @@ const {
           :value="filteredProducts"
           stripedRows
           :paginator="true"
-          :rows="10"
-          :rowsPerPageOptions="[5, 10, 20, 50]"
+          :rows="rowsPerPage"
+          :first="(currentPage - 1) * rowsPerPage"
+          :rowsPerPageOptions="[10, 20, 50, 1000]"
           class="p-datatable-sm dark:text-gray-100"
+          @page="onPageChange"
+          @update:rows="onRowsChange"
         >
-          <!-- Headers -->
           <Column field="name" :header="t('products.name')" />
           <Column field="categoryId" :header="t('products.category')">
             <template #body="slotProps">
@@ -64,10 +99,9 @@ const {
             :exportable="false"
             style="min-width: 8rem"
           >
-            <!-- Headers -->
-
             <template #body="slotProps">
               <Button
+                v-if="editProductPermission"
                 icon="pi pi-pencil"
                 severity="warning"
                 text
@@ -76,6 +110,7 @@ const {
                 @click="editProduct(slotProps.data)"
               />
               <Button
+                v-if="deleteProductPermission"
                 icon="pi pi-trash"
                 severity="danger"
                 text
@@ -89,5 +124,3 @@ const {
     </div>
   </div>
 </template>
-
-<style scoped></style>
