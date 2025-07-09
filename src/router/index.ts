@@ -31,7 +31,7 @@ router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth && !token) {
     next({ path: "/login", query: { redirect: to.fullPath } });
   }else if (permissionRequired && !permissionStore.hasPermission(permissionRequired)) { 
-    next('/login'); 
+    next('/unauthorized'); 
   }
   else {
     next();

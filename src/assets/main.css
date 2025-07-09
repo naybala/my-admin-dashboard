@@ -41,5 +41,6 @@
 
 .p-paginator-page-selected {
     border-radius: 0.6rem !important;
-    background-color: #f20723 !important;
+    background-color: #2563EB !important;
+    color: azure;
 }

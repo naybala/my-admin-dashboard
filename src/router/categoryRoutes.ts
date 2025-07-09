@@ -6,7 +6,12 @@ export const categoryRoutes = [
     path: "/categories",
     name: "categories",
     component: CategoryListView,
-    meta: { requiresAuth: true },
+    meta: { 
+      requiresAuth: true,
+      sidebar: true,                    
+      label: "sidebar.categories",        
+      icon: "pi pi-box",     
+    },
   },
   {
     path: "/categories/new",

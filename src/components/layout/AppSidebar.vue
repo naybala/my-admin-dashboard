@@ -1,13 +1,31 @@
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { defineProps } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, defineProps } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePermissionStore } from "@stores/permission";
 
 const props = defineProps<{ isOpen: boolean }>();
 const { t } = useI18n();
 const route = useRoute();
+const router = useRouter();
 const permissionStore = usePermissionStore();
+
+type CustomRouteMeta = {
+  sidebar?: boolean;
+  label?: any;
+  icon?: string;
+  permission?: string;
+};
+
+const sidebarLinks = computed(() =>
+  router.getRoutes().filter((r) => {
+    const meta = r.meta as CustomRouteMeta;
+    return (
+      meta.sidebar &&
+      (!meta.permission || permissionStore.hasPermission(meta.permission))
+    );
+  })
+);
 
 function isActiveBasePath(basePath: string) {
   return route.path.startsWith(basePath);
@@ -27,64 +45,18 @@ function isActiveBasePath(basePath: string) {
     </div>
     <nav class="mt-4">
       <ul>
-        <li>
+        <li v-for="link in sidebarLinks" :key="link.path">
           <RouterLink
-            to="/dashboard"
+            :to="link.path"
             class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
             :class="[
               { 'justify-center': !props.isOpen },
-              isActiveBasePath('/dashboard')
-                ? 'bg-blue-600 dark:bg-blue-800'
-                : '',
+              isActiveBasePath(link.path) ? 'bg-blue-600 dark:bg-blue-800' : '',
             ]"
           >
-            <i
-              class="pi pi-home"
-              :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
-            ></i>
+            <i :class="[link.meta.icon, props.isOpen ? 'mr-3' : 'mr-0']"></i>
             <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
-              {{ t("sidebar.dashboard") }}
-            </span>
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            v-if="permissionStore.hasPermission('manage products')"
-            to="/products"
-            class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
-            :class="[
-              { 'justify-center': !props.isOpen },
-              isActiveBasePath('/products')
-                ? 'bg-blue-600 dark:bg-blue-800'
-                : '',
-            ]"
-          >
-            <i
-              class="pi pi-box"
-              :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
-            ></i>
-            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
-              {{ t("sidebar.products") }}
-            </span>
-          </RouterLink>
-        </li>
-        <li>
-          <RouterLink
-            to="/categories"
-            class="flex items-center p-4 hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors duration-200"
-            :class="[
-              { 'justify-center': !props.isOpen },
-              isActiveBasePath('/categories')
-                ? 'bg-blue-600 dark:bg-blue-800'
-                : '',
-            ]"
-          >
-            <i
-              class="pi pi-tags"
-              :class="{ 'mr-0': !props.isOpen, 'mr-3': props.isOpen }"
-            ></i>
-            <span :class="{ hidden: !props.isOpen, inline: props.isOpen }">
-              {{ t("sidebar.categories") }}
+              {{ t((link.meta as CustomRouteMeta).label || "") }}
             </span>
           </RouterLink>
         </li>

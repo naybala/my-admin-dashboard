@@ -11,6 +11,7 @@ const messages = {
       settings: 'Settings',
     },
     products: {
+      products : 'Products',
       title: 'Products Management',
       list: 'Product List',
       add: 'Add Product',
@@ -70,6 +71,7 @@ const messages = {
       settings: 'ဆက်တင်များ',
     },
     products: {
+      products : 'ထုတ်ကုန်များ',
       title: 'ထုတ်ကုန်စီမံခန့်ခွဲမှု',
       list: 'ထုတ်ကုန်များ စာရင်း',
       add: 'ထုတ်ကုန်များ ထည့်ပါ',

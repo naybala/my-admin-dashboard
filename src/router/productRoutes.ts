@@ -8,7 +8,10 @@ export const productRoutes = [
     component: ProductListView,
     meta: { 
       requiresAuth: true , 
-      permission: 'manage products'
+      permission: 'manage products',
+      sidebar: true,                    
+      label: "sidebar.products",        
+      icon: "pi pi-box",                 
     },
   },
   {

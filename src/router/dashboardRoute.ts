@@ -5,6 +5,11 @@ export const dashboardRoute = [
     path: "/dashboard",
     name: "dashboard",
     component: DashboardView,
-    meta: { requiresAuth: true },
+    meta: { 
+      requiresAuth: true ,  
+      sidebar: true,                    
+      label: "sidebar.dashboard",        
+      icon: "pi pi-home",     
+    },
   },
 ];

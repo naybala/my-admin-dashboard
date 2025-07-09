@@ -23,9 +23,10 @@ const handleLogout = () => {
 
 <template>
   <header
-    class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center transition-colors duration-300"
+    class="bg-white dark:bg-gray-800 shadow p-0 md:p-4 flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0 transition-colors duration-300"
   >
-    <div class="flex items-center space-x-4">
+    <!-- Sidebar Toggle -->
+    <div class="flex items-center justify-between w-full sm:w-auto">
       <Button
         icon="pi pi-bars"
         severity="secondary"
@@ -36,6 +37,7 @@ const handleLogout = () => {
       />
     </div>
 
+    <!-- Right Actions -->
     <div class="flex items-center space-x-4">
       <Button
         label="Logout"
@@ -53,7 +55,6 @@ const handleLogout = () => {
         aria-label="Toggle Theme"
         @click="themeStore.toggleTheme"
       />
-
       <div>
         <img
           :src="locale === 'en' ? '/mm.webp' : '/en.jpeg'"
