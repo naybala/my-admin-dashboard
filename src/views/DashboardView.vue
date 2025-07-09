@@ -38,7 +38,7 @@ const chartOptions = {
       <Card class="dark:bg-gray-800 dark:text-gray-100 shadow-md">
         <template #title>Total Products</template>
         <template #content>
-          <p class="text-4xl font-bold">120</p>
+          <p class="text-4xl font-bold">1,200,000</p>
         </template>
       </Card>
 

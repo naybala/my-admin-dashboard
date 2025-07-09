@@ -29,11 +29,7 @@ const {
 
     <Card class="dark:bg-gray-800 dark:text-gray-100 shadow-md">
       <template #content>
-        <div v-if="loading" class="text-center text-gray-500">
-          {{ t("common.loading") }}...
-        </div>
-        <div v-else-if="error" class="text-red-500">{{ error }}</div>
-        <form @submit.prevent="saveProduct" v-else>
+        <form @submit.prevent="saveProduct">
           <!-- Name -->
           <NameField
             v-model="productForm.name"
@@ -59,7 +55,6 @@ const {
 
           <!-- Actions -->
           <FormActions
-            :loading="loading"
             :onCancel="cancel"
             :saveLabel="t('common.save')"
             :cancelLabel="t('common.cancel')"

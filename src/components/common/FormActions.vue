@@ -9,7 +9,6 @@
     <Button
       :label="saveLabel"
       type="submit"
-      :loading="loading"
       class="p-button-primary text-white bg-gray-600 dark:bg-gray-700 px-5"
     />
   </div>
@@ -20,7 +19,6 @@ import Button from "primevue/button";
 import { defineProps } from "vue";
 
 defineProps<{
-  loading: boolean;
   onCancel: () => void;
   saveLabel: string;
   cancelLabel: string;

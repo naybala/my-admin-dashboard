@@ -1,5 +1,5 @@
 // useCrud.ts
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import type { Ref } from "vue";
 import type { CrudOptions } from "@customTypes/crudType";
 import { apiRequest } from "./useApi";
@@ -8,42 +8,56 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
   const { apiPath, idKey = "id" } = options;
 
   const items: Ref<T[]> = ref([]);
-  const loading = ref(false);
+  const loading = ref(true);
   const error = ref<string | null>(null);
   const selectedItem: Ref<T | null> = ref(null);
-  const searchTerm = ref("");
   const total: Ref<number> = ref(0);
   const page: Ref<number> = ref(1);
   const limit: Ref<number> = ref(10);
 
-  const fetchAll = async (p = 1, l = 10) => {
-    loading.value = true;
+  const fetchAll = async (queryParams: Record<string, any> = {}) => {
     error.value = null;
-     try {
-      page.value = p;
-      limit.value = l;
+    try {
+      // Merge default pagination with custom query params
+      const params = new URLSearchParams({
+        ...queryParams,
+        page: queryParams.page?.toString() || page.value.toString(),
+        limit: queryParams.limit?.toString() || limit.value.toString(),
+      }).toString();
+
       const result = await apiRequest<{
         data: T[];
         total: number;
-      }>(`${apiPath}?page=${p}&limit=${l}`);
+        page?: number;
+        limit?: number;
+      }>(`${apiPath}?${params}`);
 
       items.value = result.data;
-      total.value = result.total;
+      total.value = result.total ?? result.data.length;
+      
+      // Update page and limit from query params if provided
+      if (queryParams.page) page.value = parseInt(queryParams.page);
+      if (queryParams.limit) limit.value = parseInt(queryParams.limit);
+      
+      return result;
     } catch (e: any) {
       error.value = e.message;
+      throw e;
     } finally {
       loading.value = false;
     }
   };
 
   const fetchOne = async (id: string | number) => {
-    loading.value = true;
+    loading.value = false;
     error.value = null;
     try {
       const result = await apiRequest<any>(`${apiPath}/${id}`);
       selectedItem.value = Array.isArray(result) ? result : result.data;
+      return result;
     } catch (e: any) {
       error.value = e.message;
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -57,10 +71,11 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
         method: "POST",
         body: JSON.stringify(item),
       });
-      await fetchAll();
+      await fetchAll(); // Refresh data after creation
       return newItem;
     } catch (e: any) {
       error.value = e.message;
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -74,10 +89,11 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
         method: "PUT",
         body: JSON.stringify(updatedFields),
       });
-      await fetchAll();
+      await fetchAll(); // Refresh data after update
       return updatedItem;
     } catch (e: any) {
       error.value = e.message;
+      throw e;
     } finally {
       loading.value = false;
     }
@@ -90,29 +106,20 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       await apiRequest(`${apiPath}/${id}`, {
         method: "DELETE",
       });
-      await fetchAll();
+      await fetchAll(); // Refresh data after deletion
     } catch (e: any) {
       error.value = e.message;
+      throw e;
     } finally {
       loading.value = false;
     }
   };
 
-  const filteredItems = computed(() => {
-    if (!searchTerm.value) return items.value;
-    const lower = searchTerm.value.toLowerCase();
-    return items.value.filter(item =>
-      Object.values(item).some(val => String(val).toLowerCase().includes(lower))
-    );
-  });
-
   return {
     items,
-    filteredItems,
     loading,
     error,
     selectedItem,
-    searchTerm,
     page,
     limit,
     total,

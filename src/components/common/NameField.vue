@@ -27,7 +27,7 @@ const updateValue = (value: string | undefined) => {
       id="name"
       :modelValue="modelValue"
       @update:modelValue="updateValue"
-      class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+      class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600 px-2"
     />
     <p v-if="error" class="text-red-500 text-sm mt-1">{{ error }}</p>
   </div>

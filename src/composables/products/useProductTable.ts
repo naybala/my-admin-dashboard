@@ -1,9 +1,11 @@
-import { onMounted } from "vue";
+// useProductTable.ts
+import { onMounted, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useConfirm } from "primevue/useconfirm";
 import { useCrud } from "../common/useCrud";
 import { useAppToast } from "../common/useAppToast";
+import type { ProductIndex } from "@customTypes/index";
 import type { Product } from "@customTypes/index";
 
 export function useProductTable() {
@@ -12,18 +14,54 @@ export function useProductTable() {
   const confirm = useConfirm();
   const { showSuccess, showInfo } = useAppToast();
 
+  const searchTerm = ref("");
+  
   const {
-    filteredItems: filteredProducts,
+    items: products,
     loading,
     error,
-    searchTerm,
+    page,
+    limit,
+    total,
     fetchAll,
     deleteItem,
-  } = useCrud<Product>({
+  } = useCrud<ProductIndex>({
     apiPath: "api/products",
   });
 
-  onMounted(fetchAll);
+ // Debounce search requests
+  let debounceTimer: ReturnType<typeof setTimeout>;
+  
+  const fetchData = async (newPage?: number, newLimit?: number) => {
+    clearTimeout(debounceTimer);
+    
+    return new Promise<void>((resolve) => {
+      debounceTimer = setTimeout(async () => {
+        try {
+          await fetchAll({
+            page: newPage || page.value,
+            limit: newLimit || limit.value,
+            search: searchTerm.value
+          });
+          resolve();
+        } catch (e) {
+          console.error("Fetch error:", e);
+        }
+      }, 300);
+    });
+  };
+
+
+  onMounted(() => {
+    fetchData().then(() => {
+      console.log("Initial data loaded. Page:", page.value, "Limit:", limit.value, "Total:", total.value);
+    });
+  });
+
+  // Watch for search term changes
+  watch(searchTerm, () => {
+    fetchData(1);
+  });
 
   const openNewProductForm = () => {
     router.push({ name: "product-new" });
@@ -41,8 +79,13 @@ export function useProductTable() {
       acceptClass: "p-button-danger",
       accept: async () => {
         if (product.id) {
-          await deleteItem(product.id);
-          showSuccess(t("common.success"), t("products.productDeleted"));
+          try {
+            await deleteItem(product.id);
+            showSuccess(t("common.success"), t("products.productDeleted"));
+            await fetchData(page.value, limit.value); 
+          } catch (e) {
+            console.error("Delete error:", e);
+          }
         }
       },
       reject: () => {
@@ -53,10 +96,14 @@ export function useProductTable() {
 
   return {
     t,
-    filteredProducts,
+    products,
     loading,
     error,
     searchTerm,
+    page,
+    limit,
+    total,
+    fetchData,
     openNewProductForm,
     editProduct,
     confirmDeleteProduct,

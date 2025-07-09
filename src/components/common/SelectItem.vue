@@ -14,16 +14,17 @@
       optionLabel="name"
       optionValue="id"
       :placeholder="placeholder"
-      class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white dark:border-gray-600"
+      :filter="true"
+      filterPlaceholder="Search..."
+      class="w-full p-inputtext-sm dark:bg-gray-700 dark:text-white border border-gray-300 dark:border-gray-600"
     />
     <p v-if="error" class="text-red-500 text-sm mt-1">{{ error }}</p>
   </div>
 </template>
 
 <script setup lang="ts">
+import { Select } from "primevue";
 import { defineProps, defineEmits } from "vue";
-import Select from "primevue/select";
-
 defineProps<{
   id: string;
   modelValue: number | null;
