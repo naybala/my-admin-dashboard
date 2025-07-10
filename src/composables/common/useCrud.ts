@@ -56,7 +56,13 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       selectedItem.value = Array.isArray(result) ? result : result.data;
       return result;
     } catch (e: any) {
-      error.value = e.message;
+      const responseData = e.responseData;
+      if (responseData?.errors && Array.isArray(responseData.errors)) {
+        error.value = responseData.errors.map((err: any) => err.message).join(', ');
+      } else {
+        error.value = responseData?.message || e.message || "An unknown error occurred.";
+      }
+      console.log(error.value);
       throw e;
     } finally {
       loading.value = false;
@@ -74,7 +80,13 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       await fetchAll(); // Refresh data after creation
       return newItem;
     } catch (e: any) {
-      error.value = e.message;
+      const responseData = e.responseData;
+      if (responseData?.errors && Array.isArray(responseData.errors)) {
+        error.value = responseData.errors.map((err: any) => err.message).join(', ');
+      } else {
+        error.value = responseData?.message || e.message || "An unknown error occurred.";
+      }
+      console.log(error.value);
       throw e;
     } finally {
       loading.value = false;
@@ -92,7 +104,13 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       await fetchAll(); // Refresh data after update
       return updatedItem;
     } catch (e: any) {
-      error.value = e.message;
+      const responseData = e.responseData;
+        if (responseData?.errors && Array.isArray(responseData.errors)) {
+          error.value = responseData.errors.map((err: any) => err.message).join(', ');
+        } else {
+          error.value = responseData?.message || e.message || "An unknown error occurred.";
+        }
+        console.log(error.value);
       throw e;
     } finally {
       loading.value = false;
@@ -108,7 +126,13 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       });
       await fetchAll(); // Refresh data after deletion
     } catch (e: any) {
-      error.value = e.message;
+      const responseData = e.responseData;
+      if (responseData?.errors && Array.isArray(responseData.errors)) {
+        error.value = responseData.errors.map((err: any) => err.message).join(', ');
+      } else {
+        error.value = responseData?.message || e.message || "An unknown error occurred.";
+      }
+      console.log(error.value);
       throw e;
     } finally {
       loading.value = false;

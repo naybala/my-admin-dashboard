@@ -16,10 +16,15 @@ export async function apiRequest<T>(
 
   const response = await fetch(fullUrl, { ...options, headers });
 
+  const data = await response.json().catch(() => ({}));
+
   if (!response.ok) {
-    const errorData = await response.json().catch(() => ({}));
-    throw new Error(errorData.message || "API request failed");
+    const error = new Error(data.message || "API request failed");
+    // Attach full server response data to the error
+    (error as any).responseData = data;
+    throw error;
   }
 
-  return await response.json();
+  return data;
 }
+

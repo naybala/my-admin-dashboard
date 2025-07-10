@@ -6,7 +6,7 @@ import NameField from "@components/common/NameField.vue";
 import Description from "@components/common/Description.vue";
 import SelectItem from "@components/common/SelectItem.vue";
 import FormActions from "@components/common/FormActions.vue";
-
+import { useServerError } from "@/composables/common/useServerError";
 const {
   t,
   isEditMode,
@@ -18,6 +18,8 @@ const {
   loading,
   error,
 } = useProductForm();
+
+useServerError(error);
 </script>
 
 <template>

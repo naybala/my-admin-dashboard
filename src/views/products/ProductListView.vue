@@ -6,7 +6,7 @@ import Paginator from "primevue/paginator";
 import BaseTable from "@/components/common/BaseTable.vue";
 import { useProductTable } from "@composables/products/useProductTable";
 import { usePermissionStore } from "@/stores/permission";
-import TableLoader from "@/components/common/TableLoader.vue";
+import Loader from "@/components/common/Loader.vue";
 import { useI18n } from "vue-i18n";
 
 const {
@@ -76,7 +76,7 @@ watch(loading, (val) => {
     <h1 class="text-3xl font-bold mb-6">{{ t("products.products") }}</h1>
     <!-- Loading/Error -->
     <div v-if="loading" class="text-center text-gray-500">
-      <TableLoader />
+      <Loader />
     </div>
 
     <div v-else>

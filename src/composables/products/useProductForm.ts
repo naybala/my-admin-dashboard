@@ -61,22 +61,18 @@ export function useProductForm() {
       return;
     }
 
-    if (isEditMode.value && productId) {
-      await updateItem(productForm.value);
-      if (!error.value) {
+    try {
+      if (isEditMode.value && productId) {
+        await updateItem(productForm.value);
         showSuccess(t("common.success"), t("products.productUpdated"));
-        router.push({ name: "products" });
       } else {
-        showError(error.value);
-      }
-    } else {
-      await createItem(productForm.value);
-      if (!error.value) {
+        await createItem(productForm.value);
         showSuccess(t("common.success"), t("products.productCreated"));
-        router.push({ name: "products" });
-      } else {
-        showError(t("common.error"), error.value);
       }
+      router.push({ name: "products" });
+    } catch (err: any) {
+      console.error("Save failed:", err);
+      showError(t("common.error"), err.message || "An unexpected error occurred");
     }
   };
 

@@ -10,12 +10,29 @@ import Toast from "primevue/toast";
 import { useAuthStore } from "@stores/auth";
 import { usePermissionStore } from "@stores/permission";
 import { apiRequest } from "@composables/common/useApi";
+import { useRouter } from "vue-router";
+import Loader from "@components/common/Loader.vue";
 
 const route = useRoute();
 const isSidebarOpen = ref(true);
 const themeStore = useThemeStore();
 const authStore = useAuthStore();
 const permissionStore = usePermissionStore();
+
+const router = useRouter();
+// const routeLoading = ref(false);
+// router.beforeEach((to, from, next) => {
+//   routeLoading.value = true;
+//   next();
+// });
+
+// router.afterEach(() => {
+//   setTimeout(() => {
+//     routeLoading.value = false;
+//   }, 300);
+// });
+
+// const globalLoading = computed(() => routeLoading.value);
 
 // type PermissionsResponse = {
 //   permissions: string[];
@@ -50,6 +67,12 @@ const showLayout = computed(() => route.path !== "/login");
       <div class="flex flex-col flex-1 overflow-hidden">
         <AppHeader @toggle-sidebar="toggleSidebar" />
         <main class="p-6 flex-1 overflow-y-auto">
+          <!-- <div v-if="globalLoading" class="text-center text-gray-500">
+            <Loader />
+          </div>
+          <div v-else>
+            <router-view />
+          </div> -->
           <router-view />
         </main>
       </div>
