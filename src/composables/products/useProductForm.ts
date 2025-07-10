@@ -29,6 +29,7 @@ export function useProductForm() {
     price: 0,
     categoryId: 0,
     description: "",
+    image: "",
   });
 
   const validationErrors = ref<Record<string, string>>({});

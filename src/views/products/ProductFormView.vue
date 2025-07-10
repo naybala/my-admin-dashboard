@@ -7,6 +7,8 @@ import Description from "@components/common/Description.vue";
 import SelectItem from "@components/common/SelectItem.vue";
 import FormActions from "@components/common/FormActions.vue";
 import { useServerError } from "@/composables/common/useServerError";
+import ImageUploader from "@/components/common/ImageUploader.vue";
+
 const {
   t,
   isEditMode,
@@ -18,7 +20,6 @@ const {
   loading,
   error,
 } = useProductForm();
-
 useServerError(error);
 </script>
 
@@ -32,6 +33,9 @@ useServerError(error);
     <Card class="dark:bg-gray-800 dark:text-gray-100 shadow-md">
       <template #content>
         <form @submit.prevent="saveProduct">
+          <!-- Image Upload -->
+          <ImageUploader v-model="productForm.image" />
+
           <!-- Name -->
           <NameField
             v-model="productForm.name"
