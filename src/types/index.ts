@@ -4,7 +4,9 @@ export interface Product {
   price: number;
   categoryId: number;
   description: string;
-  image?: string; 
+  images: string[];
+  imageFiles: File[];
+  imageUrls: string[];
 }
 
 export interface ProductIndex{
