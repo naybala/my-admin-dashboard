@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import AppSidebar from "@components/layout/AppSidebar.vue";
@@ -38,17 +38,27 @@ const router = useRouter();
 //   permissions: string[];
 // };
 
-if (authStore.isAuthenticated) {
-  const demoPermission = [
-    "manage products",
-    "create products",
-    "edit products",
-    "delete products",
-  ];
-  permissionStore.setPermissions(demoPermission);
-  //const res = await apiRequest<PermissionsResponse>("auth/permissions");
-  //permissionStore.setPermissions(res.permissions);
-}
+onMounted(() => {
+  watch(
+    () => authStore.isAuthenticated,
+    (isAuth) => {
+      if (isAuth && !permissionStore.ready) {
+        // Simulate or fetch permissions
+        const demoPermission = [
+          "manage products",
+          "create products",
+          "edit products",
+          "delete products",
+        ];
+        permissionStore.setPermissions(demoPermission);
+        // Optionally fetch from API:
+        // const res = await apiRequest<PermissionsResponse>("auth/permissions");
+        // permissionStore.setPermissions(res.permissions);
+      }
+    },
+    { immediate: true } // triggers immediately on load
+  );
+});
 
 const toggleSidebar = () => {
   isSidebarOpen.value = !isSidebarOpen.value;

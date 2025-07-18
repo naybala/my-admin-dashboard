@@ -23,7 +23,6 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
-import { defineProps, defineEmits } from "vue";
 
 const props = defineProps<{ modelValue: File[] }>();
 const emit = defineEmits(["update:modelValue"]);

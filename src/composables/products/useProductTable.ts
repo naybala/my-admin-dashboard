@@ -26,7 +26,7 @@ export function useProductTable() {
     fetchAll,
     deleteItem,
   } = useCrud<ProductIndex>({
-    apiPath: "api/products",
+    apiPath: "api/web/products",
   });
 
  // Debounce search requests

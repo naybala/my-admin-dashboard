@@ -24,7 +24,6 @@
 
 <script setup lang="ts">
 import { Select } from "primevue";
-import { defineProps, defineEmits } from "vue";
 defineProps<{
   id: string;
   modelValue: number | null;

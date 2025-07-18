@@ -1,12 +1,11 @@
 export interface Product {
   id?: number;
   name: string;
-  price: number;
   categoryId: number;
   description: string;
-  images: string[];
-  imageFiles: File[];
-  imageUrls: string[];
+  // images: string[];
+  // imageFiles: File[];
+  // imageUrls: string[];
 }
 
 export interface ProductIndex{
@@ -15,6 +14,7 @@ export interface ProductIndex{
   price: number;
   category: string;
   description: string;
+  data:any;
 }
 
 export interface Category {

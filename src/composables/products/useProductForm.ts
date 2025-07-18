@@ -22,16 +22,15 @@ export function useProductForm() {
     fetchOne,
     createItem,
     updateItem,
-  } = useCrud<Product>({ apiPath: "api/products" });
+  } = useCrud<Product>({ apiPath: "api/web/products" });
 
   const productForm = ref<Product>({
     name: "",
-    price: 0,
     categoryId: 0,
     description: "",
-    images: [] as string[],
-    imageFiles: [] as File[],
-    imageUrls: [] as string[] // after upload
+    // images: [] as string[],
+    // imageFiles: [] as File[],
+    // imageUrls: [] as string[] // after upload
   });
 
   const validationErrors = ref<Record<string, string>>({});
@@ -67,49 +66,47 @@ export function useProductForm() {
 
   try {
     // 2. Only proceed with image upload if there are files
-    if (productForm.value.imageFiles?.length > 0) {
-      // 2a. Get pre-signed URLs
-      const filesMeta = productForm.value.imageFiles.map((file) => ({
-        filename: file.name,
-        contentType: file.type,
-      }));
-      const res = await fetch(import.meta.env.VITE_BASE_URL +"/api/get-presigned-urls", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ files: filesMeta }),
-      });
+    // if (productForm.value.imageFiles?.length > 0) {
+    //   // 2a. Get pre-signed URLs
+    //   const filesMeta = productForm.value.imageFiles.map((file) => ({
+    //     filename: file.name,
+    //     contentType: file.type,
+    //   }));
+    //   const res = await fetch(import.meta.env.VITE_BASE_URL +"/api/get-presigned-urls", {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ files: filesMeta }),
+    //   });
 
-      if (!res.ok) throw new Error("Failed to get pre-signed URLs");
-      const { urls } = await res.json(); // Backend returns: { urls: [PUT URLs], finalUrls: [public URLs] }
+    //   if (!res.ok) throw new Error("Failed to get pre-signed URLs");
+    //   const { urls } = await res.json(); // Backend returns: { urls: [PUT URLs], finalUrls: [public URLs] }
       
       
 
-      // 2b. Upload each file to its corresponding signed URL
-      for (let i = 0; i < productForm.value.imageFiles.length; i++) {
-        const file = productForm.value.imageFiles[i];
-        const uploadUrl = urls[i]['url'];
+    //   // 2b. Upload each file to its corresponding signed URL
+    //   for (let i = 0; i < productForm.value.imageFiles.length; i++) {
+    //     const file = productForm.value.imageFiles[i];
+    //     const uploadUrl = urls[i]['url'];
 
-        const uploadRes = await fetch(uploadUrl, {
-          method: "PUT",
-          body: file,
-          headers: { "Content-Type": file.type , "x-amz-acl": "public-read"},
-        });
+    //     const uploadRes = await fetch(uploadUrl, {
+    //       method: "PUT",
+    //       body: file,
+    //       headers: { "Content-Type": file.type , "x-amz-acl": "public-read"},
+    //     });
 
-        if (!uploadRes.ok) throw new Error(`Upload failed for ${file.name}`);
-      }
+    //     if (!uploadRes.ok) throw new Error(`Upload failed for ${file.name}`);
+    //   }
 
-      // 2c. Store final public URLs in form
-      const publicBaseUrl = "https://property-area-dev.sgp1.digitaloceanspaces.com";
-      productForm.value.imageUrls = urls.map((entry:any) => `${publicBaseUrl}/${entry.key}`);
-    }
+    //   // 2c. Store final public URLs in form
+    //   const publicBaseUrl = "https://property-area-dev.sgp1.digitaloceanspaces.com";
+    //   productForm.value.imageUrls = urls.map((entry:any) => `${publicBaseUrl}/${entry.key}`);
+    // }
 
     // 3. Submit product data (with images)
-    if (isEditMode.value && productId) {
+    if (isEditMode.value && productId) {      
       await updateItem(productForm.value);
       showSuccess(t("common.success"), t("products.productUpdated"));
-    } else {
-      console.log(productForm.value);
-      
+    } else {      
       await createItem(productForm.value);
       showSuccess(t("common.success"), t("products.productCreated"));
     }

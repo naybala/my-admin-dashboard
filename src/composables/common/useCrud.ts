@@ -26,14 +26,16 @@ export function useCrud<T extends { id?: string | number }>(options: CrudOptions
       }).toString();
 
       const result = await apiRequest<{
-        data: T[];
-        total: number;
-        page?: number;
-        limit?: number;
+        data: {
+          data: T[];       
+          total: number;
+          page?: number;
+          limit?: number;
+        };
       }>(`${apiPath}?${params}`);
 
-      items.value = result.data;
-      total.value = result.total ?? result.data.length;
+      items.value = result.data.data;
+      total.value = result.data.total ?? result.data.data.length;
       
       // Update page and limit from query params if provided
       if (queryParams.page) page.value = parseInt(queryParams.page);

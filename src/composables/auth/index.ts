@@ -18,7 +18,7 @@ export default function useAuthData() {
 
     try {
       const responseData = await apiRequest<AuthResponse>(
-        "api/users/login",
+        "api/web/auth/login",
         {
           method: "POST",
           body: JSON.stringify(data),

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRoute, useRouter } from "vue-router";
-import { computed, defineProps } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePermissionStore } from "@stores/permission";
 
@@ -17,15 +17,16 @@ type CustomRouteMeta = {
   permission?: string;
 };
 
-const sidebarLinks = computed(() =>
-  router.getRoutes().filter((r) => {
+const sidebarLinks = computed(() => {
+  if (!permissionStore.ready) return [];
+  return router.getRoutes().filter((r) => {
     const meta = r.meta as CustomRouteMeta;
     return (
       meta.sidebar &&
       (!meta.permission || permissionStore.hasPermission(meta.permission))
     );
-  })
-);
+  });
+});
 
 function isActiveBasePath(basePath: string) {
   return route.path.startsWith(basePath);

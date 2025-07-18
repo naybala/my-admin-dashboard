@@ -25,8 +25,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const authStore = useAuthStore();
   const permissionStore = usePermissionStore();
-  const permissionRequired = to.meta.permission as string | undefined;
-
+  const permissionRequired = to.meta.permission as string | undefined;  
   const token = authStore.token;
   if (to.meta.requiresAuth && !token) {
     next({ path: "/login", query: { redirect: to.fullPath } });
