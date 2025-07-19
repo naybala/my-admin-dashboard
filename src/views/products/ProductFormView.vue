@@ -34,7 +34,11 @@ useServerError(error);
       <template #content>
         <form @submit.prevent="saveProduct">
           <!-- Image Upload -->
-          <!-- <ImageUploader v-model="productForm.imageFiles" /> -->
+          <ImageUploader
+            v-model="productForm.imageFiles"
+            :initialUrls="productForm.imageUrls"
+            @update:initialUrls="(val) => (productForm.imageUrls = val)"
+          />
 
           <!-- Name -->
           <NameField

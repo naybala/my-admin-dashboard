@@ -3,9 +3,9 @@ export interface Product {
   name: string;
   categoryId: number;
   description: string;
-  // images: string[];
-  // imageFiles: File[];
-  // imageUrls: string[];
+  images: string[];
+  imageFiles: File[];
+  imageUrls: string[];
 }
 
 export interface ProductIndex{
