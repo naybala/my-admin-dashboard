@@ -17,7 +17,6 @@ const {
   saveProduct,
   validationErrors,
   cancel,
-  loading,
   error,
   saving,
 } = useProductForm();

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watch, onMounted, computed } from "vue";
+import { watch, onMounted, computed } from "vue";
 import InputText from "primevue/inputtext";
 import Button from "primevue/button";
 import Paginator from "primevue/paginator";
@@ -12,7 +12,6 @@ import { useI18n } from "vue-i18n";
 const {
   products,
   loading,
-  error,
   searchTerm,
   page,
   limit,
