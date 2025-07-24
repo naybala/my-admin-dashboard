@@ -13,7 +13,8 @@ export default defineConfig({
       '@router': path.resolve(__dirname, 'src/router'),
       '@stores': path.resolve(__dirname, 'src/stores'),
       '@customTypes': path.resolve(__dirname, 'src/types'),
-      '@views': path.resolve(__dirname, 'src/views')
+      '@views': path.resolve(__dirname, 'src/views'),
+      '@utils': path.resolve(__dirname, 'src/utils')
     },
   },
 })

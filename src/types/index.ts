@@ -22,3 +22,17 @@ export interface Category {
   name: string;
   description: string;
 }
+
+export interface Role {
+  id?: number;
+  name: string;
+  description: string | null;
+  permissions: string[];
+}
+
+export interface RoleIndex {
+  id?: number;
+  name: string;
+  description: string | null;
+  permissions: string[];
+}

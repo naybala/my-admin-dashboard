@@ -40,6 +40,9 @@
       ],
       "@views/*": [
         "src/views/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
       ]
     }
   },

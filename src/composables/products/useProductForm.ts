@@ -1,11 +1,11 @@
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, Ref } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useCrud } from "../common/useCrud";
 import type { Product } from "../../types";
 import { useAppToast } from "../common/useAppToast";
 import { validateProductForm } from "./validateProductForm";
-import { apiRequest } from "../common/useApi";
+import { uploadImages } from "../common/uploadImage";
 
 
 export function useProductForm() {
@@ -13,6 +13,8 @@ export function useProductForm() {
   const route = useRoute();
   const { t } = useI18n();
   const { showSuccess, showError } = useAppToast();
+  const saving:Ref<boolean> = ref(false);
+
 
   const productId = route.params.id ? Number(route.params.id) : null;
   const isEditMode = ref(!!productId);
@@ -66,49 +68,22 @@ export function useProductForm() {
       return;
     }
 
-    type PresignedResponse = {
-      urls: Array<{
-        filename: string;
-        key: string;
-        url: string;
-      }>;
-    };
+   
 
+    saving.value = true;
     try {
       // 2. Only proceed with image upload if there are files
       if (productForm.value.imageFiles?.length > 0) {
-        // 2a. Get pre-signed URLs
-        const filesMeta = productForm.value.imageFiles.map((file) => ({
-          filename: file.name,
-          contentType: file.type,
-        }));
-        const res = await apiRequest<{ success: boolean; data: PresignedResponse }>("api/web/get-presigned-urls", {
-          method: "POST",
-          body: JSON.stringify({ files: filesMeta }),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (!res.success) throw new Error("Failed to get pre-signed URLs");
-        const urls  = res.data.urls;       
-    
-        // 2b. Upload each file to its corresponding signed URL
-        for (let i = 0; i < productForm.value.imageFiles.length; i++) {
-          const file = productForm.value.imageFiles[i];
-          const uploadUrl = urls[i]['url'];
-
-          const uploadRes = await fetch(uploadUrl, {
-            method: "PUT",
-            body: file,
-            headers: { "Content-Type": file.type , "x-amz-acl": "public-read"},
-          });
-
-          if (!uploadRes.ok) throw new Error(`Upload failed for ${file.name}`);
-        }
-
-        // 2c. Store final public URLs in form
-        productForm.value.imageUrls = urls.map((entry:any) => `${entry.key}`);
+        const uploadedKeys = await uploadImages(productForm.value.imageFiles);
+        const CDN_PREFIX = import.meta.env.VITE_CDN_PREFIX;
+        productForm.value.imageUrls = [
+          ...productForm.value.imageUrls,
+          ...uploadedKeys,
+        ];
+        productForm.value.imageUrls = productForm.value.imageUrls.map((url) =>
+          url.startsWith(CDN_PREFIX) ? url.replace(CDN_PREFIX, "") : url
+        );
+         
       }
 
       // 3. Submit product data (with images)
@@ -126,6 +101,8 @@ export function useProductForm() {
     } catch (err: any) {
       console.error("Save failed:", err);
       showError(t("common.error"), err.message || "An unexpected error occurred");
+    } finally {
+      saving.value = false; 
     }
   };
 
@@ -144,5 +121,6 @@ export function useProductForm() {
     cancel,
     loading,
     error,
+    saving,
   };
 }

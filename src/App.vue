@@ -49,6 +49,10 @@ onMounted(() => {
           "create products",
           "edit products",
           "delete products",
+          "manage roles",
+          "create roles",
+          "edit roles",
+          "delete roles",
         ];
         permissionStore.setPermissions(demoPermission);
         // Optionally fetch from API:

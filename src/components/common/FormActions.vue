@@ -9,6 +9,8 @@
     <Button
       :label="saveLabel"
       type="submit"
+      :disabled="loading"
+      :loading="loading"
       class="p-button-primary text-white bg-gray-600 dark:bg-gray-700 px-5"
     />
   </div>
@@ -21,5 +23,6 @@ defineProps<{
   onCancel: () => void;
   saveLabel: string;
   cancelLabel: string;
+  loading: boolean;
 }>();
 </script>

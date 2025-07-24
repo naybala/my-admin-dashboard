@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import { useProductForm } from "@composables/products/useProductForm";
+import { useRoleForm } from "@composables/roles/useRoleForm";
 import Toast from "primevue/toast";
 import Card from "primevue/card";
 import NameField from "@components/common/NameField.vue";
 import Description from "@components/common/Description.vue";
-import SelectItem from "@components/common/SelectItem.vue";
 import FormActions from "@components/common/FormActions.vue";
 import { useServerError } from "@/composables/common/useServerError";
-import ImageUploader from "@/components/common/ImageUploader.vue";
+import GroupedPermissions from "@/components/common/GroupedPermissions.vue";
 
 const {
   t,
   isEditMode,
-  productForm,
-  categories,
-  saveProduct,
+  roleForm,
+  saveRole,
   validationErrors,
   cancel,
   loading,
   error,
   saving,
-} = useProductForm();
+  permissions,
+} = useRoleForm();
+
 useServerError(error);
 </script>
 
@@ -28,40 +28,27 @@ useServerError(error);
   <div class="p-6">
     <Toast />
     <h1 class="text-3xl font-bold mb-6">
-      {{ isEditMode ? t("products.edit") : t("products.add") }}
+      {{ isEditMode ? t("roles.edit") : t("roles.add") }}
     </h1>
 
     <Card class="dark:bg-gray-800 dark:text-gray-100 shadow-md">
       <template #content>
-        <form @submit.prevent="saveProduct">
-          <!-- Image Upload -->
-          <ImageUploader
-            v-model="productForm.imageFiles"
-            :initialUrls="productForm.imageUrls"
-            @update:initialUrls="(val) => (productForm.imageUrls = val)"
-          />
-
+        <form @submit.prevent="saveRole">
           <!-- Name -->
           <NameField
-            v-model="productForm.name"
-            :label="t('products.name')"
+            v-model="roleForm.name"
+            :label="t('roles.name')"
             :error="validationErrors.name"
-          />
-
-          <!-- Category -->
-          <SelectItem
-            id="category"
-            v-model="productForm.categoryId"
-            :label="t('products.category')"
-            :options="categories"
-            :placeholder="t('products.selectCategory')"
-            :error="validationErrors.categoryId"
           />
 
           <!-- Description -->
           <Description
-            v-model="productForm.description"
-            :label="t('products.description')"
+            v-model="roleForm.description"
+            :label="t('roles.description')"
+          />
+          <GroupedPermissions
+            :permissions="permissions"
+            v-model="roleForm.permissions"
           />
 
           <!-- Actions -->

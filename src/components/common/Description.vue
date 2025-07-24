@@ -20,7 +20,7 @@
 import Textarea from "primevue/textarea";
 
 defineProps<{
-  modelValue: string | undefined;
+  modelValue: string | undefined | null;
   label: string;
 }>();
 
