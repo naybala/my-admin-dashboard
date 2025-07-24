@@ -7,7 +7,6 @@ import { useCrud } from "../common/useCrud";
 import { useAppToast } from "../common/useAppToast";
 import type { RoleIndex } from "@customTypes/index";
 import type { Role } from "@customTypes/index";
-import { apiRequest } from "../common/useApi";
 
 
 export function useRoleTable() {

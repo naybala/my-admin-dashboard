@@ -1,4 +1,3 @@
-<!-- src/components/permissions/GroupedPermissions.vue -->
 <template>
   <div class="border border-red-600 rounded-md p-5">
     <div
@@ -56,7 +55,6 @@ const groupedPermissions = computed(() => {
 
   props.permissions.forEach((perm) => {
     const parts = perm.split(" ");
-    const action = parts[0];
     const entity = parts.slice(1).join(" ");
     if (!grouped[entity]) grouped[entity] = [];
     grouped[entity].push(perm);

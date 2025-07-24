@@ -15,7 +15,6 @@ const {
   saveRole,
   validationErrors,
   cancel,
-  loading,
   error,
   saving,
   permissions,
