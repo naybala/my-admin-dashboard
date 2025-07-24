@@ -2,14 +2,14 @@
 import InputText from "primevue/inputtext";
 
 defineProps<{
-  modelValue: string | undefined;
+  modelValue: string | undefined | null;
   label: string;
   error?: string;
 }>();
 
 const emit = defineEmits(["update:modelValue"]);
 
-const updateValue = (value: string | undefined) => {
+const updateValue = (value: string | undefined | null) => {
   emit("update:modelValue", value ?? "");
 };
 </script>

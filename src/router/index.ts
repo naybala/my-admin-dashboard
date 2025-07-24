@@ -8,6 +8,7 @@ import { productRoutes } from "./productRoutes";
 import { categoryRoutes } from "./categoryRoutes";
 import { roleRoutes } from "./roleRoutes";
 import { usePermissionStore } from "@stores/permission";
+import { userRoutes } from "./userRoutes"; 
 
 // Combine all routes
 const routes = [
@@ -16,6 +17,7 @@ const routes = [
   ...productRoutes,
   ...categoryRoutes,
   ...roleRoutes,
+  ...userRoutes, 
 ];
 
 const router = createRouter({

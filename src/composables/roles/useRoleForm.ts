@@ -95,7 +95,7 @@ export function useRoleForm() {
 
 
   const cancel = () => {
-    router.push({ name: "products" });
+    router.push({ name: "roles" });
   };
 
   return {

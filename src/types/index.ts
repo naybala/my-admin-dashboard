@@ -36,3 +36,16 @@ export interface RoleIndex {
   description: string | null;
   permissions: string[];
 }
+
+
+export interface User {
+  id?: number;
+  name: string;
+  email: string | null;
+}
+
+export interface UserIndex {
+  id?: number;
+  name: string;
+  email: string | null;
+}
