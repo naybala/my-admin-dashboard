@@ -46,7 +46,7 @@ export function useRoleForm() {
         roleForm.value = { ...role.value };
       }
     }
-     const response =  await apiRequest<any>('api/web/roles/get-all-permission', {
+    const response =  await apiRequest<any>('api/web/roles/get-all-permission', {
         method: "POST",
       });
       permissions.value = response.data;

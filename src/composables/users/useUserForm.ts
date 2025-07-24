@@ -5,6 +5,7 @@ import { useCrud } from "../common/useCrud";
 import type { User } from "../../types";
 import { useAppToast } from "../common/useAppToast";
 import { validateUserForm } from "./validateUserForm";
+import { apiRequest } from "../common/useApi";
 
 export function useUserForm() {
   const router = useRouter();
@@ -12,6 +13,7 @@ export function useUserForm() {
   const { t } = useI18n();
   const { showSuccess, showError } = useAppToast();
   const saving:Ref<boolean> = ref(false);
+  const roles = ref<any>([]);
 
   const itemId = route.params.id ? Number(route.params.id) : null;
   const isEditMode = ref(!!itemId);
@@ -28,7 +30,8 @@ export function useUserForm() {
   const form = ref<User>({
     name: "",
     email: "",
-    // other fields
+    roleId: null, 
+    password: "",
   });
 
   const validationErrors = ref<Record<string, string>>({});
@@ -40,6 +43,10 @@ export function useUserForm() {
         form.value = { ...item.value };
       }
     }
+     const response =  await apiRequest<any>('api/web/roles/get-all-roles', {
+            method: "GET",
+          });
+    roles.value = response.data;
   });
 
   watch(item, (newVal) => {
@@ -87,5 +94,6 @@ export function useUserForm() {
     loading,
     error,
     saving,
+    roles,
   };
 }

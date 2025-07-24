@@ -42,6 +42,8 @@ export interface User {
   id?: number;
   name: string;
   email: string | null;
+  roleId: number | null; 
+  password: string;
 }
 
 export interface UserIndex {

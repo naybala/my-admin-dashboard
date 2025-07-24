@@ -43,6 +43,7 @@ const deletePermission = computed(() =>
 const tableColumns = [
   { label: "Name", field: "name" },
   { label: "Email", field: "email" },
+  { label: "role", field: "role" },
 ];
 
 const tableActions = [
